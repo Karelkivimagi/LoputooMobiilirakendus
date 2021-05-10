@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-musicapp-dev-123124-authRole",
+      "UnauthRoleArn": "arn:aws:iam::314170732993:role/amplify-musicapp-dev-123124-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::314170732993:role/amplify-musicapp-dev-123124-authRole",
+      "Region": "eu-west-2",
+      "DeploymentBucketName": "amplify-musicapp-dev-123124-deployment",
+      "UnauthRoleName": "amplify-musicapp-dev-123124-unauthRole",
+      "StackName": "amplify-musicapp-dev-123124",
+      "StackId": "arn:aws:cloudformation:eu-west-2:314170732993:stack/amplify-musicapp-dev-123124/5b461c30-9dcd-11eb-89a4-0280c5dcf9e0",
+      "AmplifyAppId": "d2falsiufruzh1"
+    }
+  }
+}

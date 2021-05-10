@@ -1,0 +1,121 @@
+import React from 'react';
+import { View, TextInput, Text, FlatList} from 'react-native';
+import { useState, useEffect } from 'react';
+import styles from './styles';
+import stylesResults from './styles';
+import AlbumCategory from '../AlbumCategory';
+import { API, graphqlOperation } from 'aws-amplify';
+import { listAlbumCategorys } from '../../src/graphql/queries';
+
+    const SearchBar = () => {
+    const [insertField, setInsertField] = useState('');
+    const [categories, setCategories] = useState([]);
+    const [searchData, setSearchData] = useState([]);
+    const [amountList, setAmountList] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
+    const lol = useState;
+    /*const nr = 0;*/
+    const [nr, setNr] = useState();
+    let searchArray = [];
+    let data;
+
+
+    useEffect(() => {
+      var fetchAlbumCategories = async () => {
+        try {
+          var data = await API.graphql(graphqlOperation(listAlbumCategorys));
+          setCategories(data.data.listAlbumCategorys.items);
+          setSearchData(data.data.listAlbumCategorys.items);
+
+         /* console.log(data.data.listAlbumCategorys.items[1].albums.items[0].id);*/
+         /* console.log(data.data.listAlbumCategorys.items[1].albums);*/
+
+         
+        } catch (e) {
+          console.log(e);
+        }
+      }
+
+      fetchAlbumCategories();
+      
+    }, []);
+
+    for (let i = 0; i < Object.keys(searchData).length; i++){
+      var object = searchData[i].title;
+      searchArray.push(object)
+}
+     useEffect(() => {
+       if (!insertField) return setSearchResults([])
+      var foundPresent = searchArray.includes(insertField);
+      let setNr = searchArray.indexOf(insertField)
+      if (searchArray.includes(insertField)) {
+        setCategories({
+          categories: categories.filter(i => i.title.includes(insertField),),
+        });
+        console.log("Leitud");
+        console.log(foundPresent)
+        console.log(setNr)
+        console.log(searchData[setNr].id)
+        console.log(searchData[setNr].albums)
+
+
+    } else {
+
+        console.log("Ei leitud vastavat albumit!");
+        console.log(searchArray); 
+        console.log(insertField)
+        console.log(foundPresent)
+    }
+     }, [insertField]);
+
+    return (
+      <View>
+        <View style={styles.container}> 
+            <TextInput 
+            style={{        width: '100%',
+            height: 30,
+            paddingLeft: 8,
+            fontSize: 16,
+            backgroundColor: 'white',
+            color: 'black',
+            marginTop: 100,
+          }}
+            placeholder='Otsi ..'
+            value={insertField}
+            onChangeText={insertField => setInsertField(insertField)}
+            defaultValue={insertField}
+           /*onEndEditing={lol}*/
+            >   
+            </TextInput>
+
+          </View>
+
+
+            <View>
+{searchArray.includes(insertField) ?
+             <View style={stylesResults.containerResults}>
+                <FlatList
+                    data={categories}
+                    renderItem={({ item }) => ( 
+                      <AlbumCategory 
+                        title={item.title} 
+                        albums={item.albums.items} 
+                      />
+                    )}
+                  keyExtractor={item => item.id} 
+                />
+              </View>
+              : null }
+            </View>
+          <View>
+              <Text style={{color: 'white', fontSize: 18}}>Otsingu tulemused: {insertField}</Text>
+          </View>
+
+
+        </View>
+    )
+
+}
+
+
+export default SearchBar;
